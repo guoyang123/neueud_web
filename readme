@@ -1,0 +1,124 @@
+
+c:client/s:server
+开发两套程序：c s
+ b:浏览器/s:服务器
+发送请求：浏览器
+服务器：接收请求、处理请求、响应
+
+ 准守 http 协议
+  http:  请求：浏览器
+
+          响应：服务器
+
+URL: 统一资源定位符；
+    http://domain:port/uri?username=admin&password=123456&key=value
+    https:
+    请求的必要信息：
+    Request URL
+    Request Method: get(从服务器获取数据)  post(向服务器提交数据) put（修改）  delete（删除数据）
+
+    响应的信息：
+     status code:状态码   404 页面找不到\200 ok\500服务端代码错误\302重定向 403：权限不足
+     响应内容
+
+项目包结构：
+  com.neuedu
+             .controller 控制层
+             .service  业务逻辑
+             .dao 持久层
+             .common 工具包
+             .pojo 实体类包
+             .const 常量包
+
+查询mysql数据库编码:
+show variables like "%character%";
+update neuedu_user set question='大学班主任是?' where id=21;
+
+
+
+缓存：
+在内存中开辟空间，将数据保存到缓存中。
+当用户第一次访问商品数据时，程序读缓存数据，如果缓存中没有数据，会读mysql，从mysql获取到数据后会将
+数据放到缓存中，然后将数据返回到客户端。
+当用户第二次访问商品数据，程序读缓存，
+
+
+ MVC、SpringMVC框架：
+ 1，获取视图层参数
+ 2，往前端传递数据
+ 3，数据绑定
+ 4，文件上传、下载
+ 5，restful-->以资源为导向
+ http://localhost:8080/Businessweb/user?operation=1&userid=1
+
+  http://localhost:8080/Businessweb/user?userid=1
+   http://localhost:8080/Businessweb/user/1/1
+
+
+什么是枚举：  有固定的值的变量。
+            int  onoroff;
+            enum
+
+
+  id          parentid
+
+   1             0
+   2             1
+   3             2
+   4             3
+   5             3
+   6             2
+
+
+   id=1的后代节点：
+
+   id=2
+
+   id=3
+
+   id=4
+
+    null
+
+    递归查询：自己调用自己
+
+
+
+分页查询：
+
+  select * from  product  limit ?,?
+   ?:偏移量
+   ?:数量
+
+   从11-20
+   limit 10,10
+
+
+    pageNo:第几页 pageSize：查询数量 10
+    第1页  1-10    0    -9
+    第2页 11-20    10    -19
+    第三页 21-30   20     -29
+     0 1 2
+    （pageNo-1）*pageSize
+
+    limit ？ ,pageSize
+
+
+
+   count     23
+   pageSize  10
+             (23/10)--->2+1
+             30/10 --->3
+
+ totalPage:  (count%pageSize==0) ? (count/pageSize):(count/pageSize +1)
+
+
+PageModel
+
+  List<T>
+  totalPage
+  isFirst true/false
+  isLast true/false
+
+
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    
+</head>
+<body onload="ready()">
+
+
+   <script>
+
+    function  ready() {
+
+         //ajax请求
+
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        //初始化请求
+        xmlhttp.open("GET",
+            "http://localhost:8080/BusinessWeb/user?operation=1&username=admin2&password=admin3",
+            true);
+        //发送请求
+        xmlhttp.send();
+        //监听请求/响应的状态
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                //将json字符串转js对象
+                var obj=   JSON.parse(xmlhttp.responseText);
+                //alert(obj);
+                document.getElementById("data").innerHTML=obj.username;
+            }
+        }
+
+
+
+
+    }
+
+
+
+
+   </script>
+
+
+<span id="data"></span>
+
+
+</body>
+</html>

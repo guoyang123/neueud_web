@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+       Copyright 2009-2017 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neuedu.dao.ICartDao">
+
+
+
+    <select id="findCartByUseridAndProductid" parameterType="map" resultType="cart">
+
+        select id,user_id,product_id,quantity,checked,create_time,update_time from neuedu_cart
+         where user_id=#{userid} and  product_id=#{productid}
+
+    </select>
+
+
+    <insert id="addProductToCart" parameterType="cart" keyColumn="id" useGeneratedKeys="true">
+
+        INSERT  INTO  neuedu_cart(user_id,product_id,quantity,checked,create_time,update_time)
+        VALUES (#{user_id},#{product_id},#{quantity},#{checked},now(),now())
+
+    </insert>
+
+
+<update id="updateCartByUseridAndProductid" parameterType="cart">
+
+     UPDATE  neuedu_cart set quantity=#{quantity} WHERE  user_id=#{user_id} and product_id=#{product_id}
+
+</update>
+
+
+
+    <select id="findCartsByUserid" parameterType="int" resultType="cart">
+
+        select id,user_id,product_id,quantity,checked,create_time,update_time from neuedu_cart
+        where user_id=#{userid}
+
+    </select>
+
+    <select id="isCheckAll" parameterType="int" resultType="int">
+
+        select count(1) from neuedu_cart
+        where user_id=#{userid} and  checked=0
+
+    </select>
+
+</mapper>
