@@ -32,6 +32,7 @@ public class ProductDaoImpl implements IProductDao {
 
     @Override
     public int updateProduct(Product product) {
+
         return sqlSession.update("com.neuedu.dao.IProductDao.updateProduct",product);
     }
 

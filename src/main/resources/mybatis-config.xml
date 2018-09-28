@@ -37,6 +37,9 @@
         <typeAlias type="com.neuedu.pojo.Product" alias="product"></typeAlias>
         <typeAlias type="com.neuedu.pojo.Category" alias="category"></typeAlias>
         <typeAlias type="com.neuedu.pojo.Cart" alias="cart"></typeAlias>
+        <typeAlias type="com.neuedu.pojo.Order" alias="order"></typeAlias>
+        <typeAlias type="com.neuedu.pojo.OrderItem" alias="orderItem"></typeAlias>
+        <typeAlias type="com.neuedu.pojo.PayInfo" alias="payInfo"></typeAlias>
     </typeAliases>
 
 

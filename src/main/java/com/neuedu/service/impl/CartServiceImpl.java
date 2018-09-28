@@ -26,6 +26,7 @@ public class CartServiceImpl implements ICartService {
     private ICartDao cartDao;
     @Autowired
     private IProductDao productDao;
+
     @Override
     public ServerResponse<CartVO> addProductToCart(Integer userid, Integer productid, int count) {
 
@@ -48,7 +49,74 @@ public class CartServiceImpl implements ICartService {
         return ServerResponse.createServerResponse(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),cartVO);
     }
 
+    @Override
+    public ServerResponse<CartVO> findCartsByUserId(Integer userid) {
 
+        //step1:根据userid查询用户购物车信息
+       CartVO cartVO=  getCartVOLimit(userid);
+
+        return ServerResponse.createServerResponse(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),cartVO);
+
+    }
+
+    @Override
+    public ServerResponse<CartVO> updateCartByUseridAndProductid(Integer userid, Integer productid, Integer quantity) {
+        //step1:参数的非空验证
+        if(productid==null||quantity==null){
+            return  ServerResponse.createServerResponse(ResponseCode.NEED_PRODUCT.getCode(),ResponseCode.NEED_PRODUCT.getMsg());
+        }
+      //setp2:构造cart
+        Cart cart=new Cart();
+        cart.setUser_id(userid);
+        cart.setProduct_id(productid);
+        cart.setQuantity(quantity);
+        cartDao.updateCartByUseridAndProductid(cart);
+        CartVO cartVO=getCartVOLimit(userid);
+        return ServerResponse.createServerResponse(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),cartVO);
+    }
+
+    @Override
+    public ServerResponse<CartVO> deleteProductsFromCart(Integer userid, String productIds) {
+        //step1:参数的非空验证
+        if(productIds==null||productIds.equals("")){
+            return  ServerResponse.createServerResponse(ResponseCode.NEED_PRODUCT.getCode(),ResponseCode.NEED_PRODUCT.getMsg());
+        }
+
+        //step2: productIds   1,2,3
+        String[] productidstrarry=productIds.split(",");
+        List<Integer> productIdsList=new ArrayList<>();
+        for(String productidStr:productidstrarry){
+           Integer productid= Integer.parseInt(productidStr);
+           productIdsList.add(productid);
+        }
+       cartDao.deletProducts(productIdsList,userid);
+        CartVO cartVO=getCartVOLimit(userid);
+        return ServerResponse.createServerResponse(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),cartVO);
+    }
+
+    @Override
+    public  ServerResponse<CartVO>  checkedProductByProductId(Integer userid, Integer productid) {
+        //step1:参数的非空验证
+        if(productid==null){
+            return  ServerResponse.createServerResponse(ResponseCode.NEED_PRODUCT.getCode(),ResponseCode.NEED_PRODUCT.getMsg());
+        }
+        cartDao.checkedProductByProductId(userid,productid);
+
+        CartVO cartVO=getCartVOLimit(userid);
+        return ServerResponse.createServerResponse(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),cartVO);
+    }
+
+    @Override
+    public  ServerResponse<CartVO>  uncheckedProductByProductId(Integer userid, Integer productid) {
+        //step1:参数的非空验证
+        if(productid==null){
+            return  ServerResponse.createServerResponse(ResponseCode.NEED_PRODUCT.getCode(),ResponseCode.NEED_PRODUCT.getMsg());
+        }
+        cartDao.uncheckedProductByProductId(userid,productid);
+
+        CartVO cartVO=getCartVOLimit(userid);
+        return ServerResponse.createServerResponse(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),cartVO);
+    }
 
 
     public  CartVO getCartVOLimit(Integer userid){
@@ -76,7 +144,10 @@ public class CartServiceImpl implements ICartService {
                //设置商品总价格
                cartProductVO.setTotalPrice(BigDecimalUtils.multiply(product.getPrice(),new BigDecimal(cart.getQuantity())));
 
-                carttotalPrice=BigDecimalUtils.add(carttotalPrice,cartProductVO.getTotalPrice());
+               if(cart.getChecked()==Const.CHECKENUM.CHECKED.getCode()){
+                   carttotalPrice=BigDecimalUtils.add(carttotalPrice,cartProductVO.getTotalPrice());
+               }
+
                 //校验库存
                 if(product.getStock()>cart.getQuantity()){
                     //库存充足

@@ -15,6 +15,9 @@ public class DateUtils {
     //将Date转成字符串格式
     public  static  String  dateToString(Date date,String  dateformat){
 
+        if(date==null){
+            return "";
+        }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(dateformat);
         String str= simpleDateFormat.format(date);
 
@@ -25,6 +28,9 @@ public class DateUtils {
     //将Date转成字符串格式
     public  static  String  dateToString(Date date){
 
+        if(date==null){
+            return "";
+        }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(DATEFORMAT);
         String str= simpleDateFormat.format(date);
 

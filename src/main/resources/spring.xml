@@ -34,9 +34,8 @@
     </bean>
 
     <!-- 配置mybatis mapper接口 -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.neuedu.mapper"/>
-        <property name="sqlSessionTemplateBeanName" value="sqlSession"/>
-    </bean>
-
+  <!--  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.neuedu.dao"/>
+        <prope rty name="sqlSessionTemplateBeanName" value="sqlSession"/>
+    </bean>-->
 </beans>
